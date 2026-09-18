@@ -128,13 +128,13 @@
         <p class="text-amber-300 font-semibold text-xs">【解決手順（約1分）】</p>
         <ol class="list-decimal list-inside text-slate-300 text-[11px] space-y-1">
           <li><a href="https://console.firebase.google.com/" target="_blank" class="text-blue-400 underline font-semibold">Firebase Console</a> ＞ プロジェクト <code class="text-emerald-400">saino-chokubai-7448c</code> を開く</li>
-          <li>左メニュー <b>Firestore Database</b> ＞ <b>「ルール」</b> タブをクリック</li>
+          <li>左メニュー <b>Firestore Database</b>（※Realtime Databaseではありません）＞ <b>「ルール」</b> タブをクリック</li>
           <li>以下のコードを貼り付けて右上 <b>「公開」</b> ボタンを押してください</li>
         </ol>
         <pre id="rule-code" class="font-mono text-emerald-400 select-all overflow-x-auto p-2 bg-slate-950 rounded border border-slate-800 text-[11px]">rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /users/{userId}/tasks/{taskId} {
+    match /users/{userId}/{document=**} {
       allow read, write: if request.auth != null && request.auth.uid == userId;
     }
   }
