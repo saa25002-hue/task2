@@ -12,6 +12,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+  
   <script>
     tailwind.config = {
       theme: {
@@ -54,7 +55,6 @@
 </head>
 <body class="text-slate-800 bg-slate-50 min-h-screen flex flex-col antialiased">
 
-  <!-- Navigation Header -->
   <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
       <!-- Logo -->
@@ -76,7 +76,7 @@
           <span>公開手順ガイド</span>
         </button>
 
-        <!-- User Profile Area (Hidden when logged out) -->
+        <!-- User Profile Area -->
         <div id="user-profile" class="hidden flex items-center space-x-3 border-l border-slate-200 pl-3">
           <img id="user-avatar" src="" alt="Avatar" class="w-8 h-8 rounded-full border border-slate-300" />
           <span id="user-name" class="text-sm font-medium text-slate-700 hidden sm:inline-block"></span>
@@ -89,21 +89,49 @@
     </div>
   </header>
 
-  <!-- Main Content Area -->
   <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
 
-    <!-- Firestore Permission Alert Banner (Hidden by default) -->
-    <div id="firestore-error-banner" class="hidden mb-6 bg-rose-50 border border-rose-200 rounded-2xl p-5 text-rose-900 shadow-sm space-y-3">
+    <!-- Unauthorized Domain Alert Banner -->
+    <div id="auth-error-banner" class="hidden mb-6 bg-amber-50 border-2 border-amber-300 rounded-2xl p-5 text-amber-900 shadow-md space-y-3">
       <div class="flex items-start space-x-3">
-        <svg class="w-6 h-6 text-rose-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+        <svg class="w-7 h-7 text-amber-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
         <div class="space-y-1">
-          <h4 class="font-bold text-sm text-rose-800">Firestore データベースのセキュリティルールを設定してください</h4>
-          <p class="text-xs text-rose-700">Firebase Console でデータベースの権限（セキュリティルール）が未設定、または拒否されているためデータの読み書きが制限されています。</p>
+          <h4 class="font-bold text-base text-amber-900">⚠️ ドメイン承認エラー (auth/unauthorized-domain)</h4>
+          <p class="text-xs text-amber-800">現在のドメイン（Webサイトのアドレス）が Firebase Authentication の承認済みドメインに登録されていません。</p>
         </div>
       </div>
-      <div class="bg-slate-900 text-slate-100 p-3 rounded-xl text-xs space-y-2">
-        <p class="text-slate-400 font-mono text-[11px]">【解決手順】Firebase Console ＞ Firestore Database ＞ 「ルール」タブを開き、下記コードに貼り付けて「公開」をクリックしてください：</p>
-        <pre id="rule-code" class="font-mono text-emerald-400 select-all overflow-x-auto p-1 bg-slate-950 rounded">rules_version = '2';
+      <div class="bg-slate-900 text-slate-100 p-4 rounded-xl text-xs space-y-2">
+        <p class="text-amber-300 font-semibold text-xs">【追加が必要な現在のドメイン】</p>
+        <div class="flex items-center space-x-2">
+          <code id="current-hostname" class="font-mono text-emerald-400 font-bold bg-slate-950 px-3 py-1.5 rounded border border-slate-800 text-xs select-all flex-grow"></code>
+          <button id="btn-copy-domain" type="button" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded font-medium text-xs transition">ドメイン名をコピー</button>
+        </div>
+        <p class="text-amber-300 font-semibold text-xs pt-2">【設定手順（約30秒）】</p>
+        <ol class="list-decimal list-inside text-slate-300 text-[11px] space-y-1">
+          <li><a href="https://console.firebase.google.com/" target="_blank" class="text-blue-400 underline font-semibold">Firebase Console</a> ＞ プロジェクト <code class="text-emerald-400">saino-chokubai-7448c</code></li>
+          <li>左メニュー <b>Authentication</b> ＞ <b>「設定」</b> ＞ <b>「承認済みドメイン」</b> タブを開く</li>
+          <li><b>「ドメインの追加」</b> をクリックし、上記でコピーしたドメイン名を貼り付けて保存してください</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- Firestore Permission Alert Banner -->
+    <div id="firestore-error-banner" class="hidden mb-6 bg-rose-50 border-2 border-rose-300 rounded-2xl p-5 text-rose-900 shadow-md space-y-3 animate-pulse">
+      <div class="flex items-start space-x-3">
+        <svg class="w-7 h-7 text-rose-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+        <div class="space-y-1">
+          <h4 class="font-bold text-base text-rose-900">⚠️ Firestore データベースの権限エラー (Missing or insufficient permissions)</h4>
+          <p class="text-xs text-rose-800">Firebase コンソールで Cloud Firestore のセキュリティルールが設定されていないため、タスクの保存・取得が制限されています。</p>
+        </div>
+      </div>
+      <div class="bg-slate-900 text-slate-100 p-4 rounded-xl text-xs space-y-2">
+        <p class="text-amber-300 font-semibold text-xs">【解決手順（約1分）】</p>
+        <ol class="list-decimal list-inside text-slate-300 text-[11px] space-y-1">
+          <li><a href="https://console.firebase.google.com/" target="_blank" class="text-blue-400 underline font-semibold">Firebase Console</a> ＞ プロジェクト <code class="text-emerald-400">saino-chokubai-7448c</code> を開く</li>
+          <li>左メニュー <b>Firestore Database</b> ＞ <b>「ルール」</b> タブをクリック</li>
+          <li>以下のコードを貼り付けて右上 <b>「公開」</b> ボタンを押してください</li>
+        </ol>
+        <pre id="rule-code" class="font-mono text-emerald-400 select-all overflow-x-auto p-2 bg-slate-950 rounded border border-slate-800 text-[11px]">rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
     match /users/{userId}/tasks/{taskId} {
@@ -117,17 +145,16 @@ service cloud.firestore {
     <!-- Loading State Screen -->
     <div id="loading-screen" class="flex flex-col items-center justify-center py-20 space-y-4">
       <div class="w-12 h-12 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>
-      <p class="text-sm text-slate-500 font-medium">Firebaseを認証中...</p>
+      <p class="text-sm text-slate-500 font-medium">Firebase 認証状態を確認中...</p>
     </div>
 
-    <!-- Logged Out View (Auth Screen) -->
     <div id="auth-view" class="hidden max-w-md mx-auto py-10">
       <div class="bg-white rounded-2xl shadow-xl border border-slate-100 p-8 text-center space-y-6">
         <div class="w-16 h-16 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mx-auto text-2xl shadow-inner">
-          <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+          <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
         </div>
         <div class="space-y-2">
-          <h2 class="text-2xl font-bold text-slate-900">タスク管理アプリへようこそ</h2>
+          <h2 class="text-2xl font-bold text-slate-900">タスク管理 Pro</h2>
           <p class="text-sm text-slate-500">Google アカウントでサインインして、すべてのデバイスでタスクをリアルタイム同期しましょう。</p>
         </div>
 
@@ -145,55 +172,54 @@ service cloud.firestore {
         <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 text-left text-xs text-amber-800 space-y-1">
           <p class="font-bold flex items-center">
             <svg class="w-4 h-4 mr-1.5 text-amber-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
-            GitHub Pages での利用注意点
+            GitHub Pages での注意点
           </p>
-          <p>GitHub Pages に公開した際、ログイン画面でエラーが出た場合は Firebase コンソールの <b>「Authentication > 設定 > 承認済みドメイン」</b> に GitHub Pages のドメイン（例: <code>username.github.io</code>）を追加してください。</p>
+          <p>GitHub Pages 公開時にログインエラーが出る場合は、Firebase Console の <b>「Authentication > 設定 > 承認済みドメイン」</b> にご自身のドメイン（例: <code>username.github.io</code>）を追加してください。</p>
         </div>
       </div>
     </div>
 
-    <!-- Logged In Dashboard View -->
     <div id="app-view" class="hidden space-y-6">
 
       <!-- Stats Overview Cards -->
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        <div class="bg-white p-4 rounded-xl border border-slate-200/80 shadow-sm flex items-center justify-between">
+        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
           <div>
             <p class="text-xs font-medium text-slate-500">全タスク</p>
             <p id="stat-total" class="text-2xl font-bold text-slate-800 mt-1">0</p>
           </div>
-          <div class="w-10 h-10 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center text-lg">
-            <i class="fa-solid fa-list-check"></i>
+          <div class="w-10 h-10 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
           </div>
         </div>
 
-        <div class="bg-white p-4 rounded-xl border border-slate-200/80 shadow-sm flex items-center justify-between">
+        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
           <div>
             <p class="text-xs font-medium text-slate-500">未完了</p>
             <p id="stat-pending" class="text-2xl font-bold text-amber-600 mt-1">0</p>
           </div>
-          <div class="w-10 h-10 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center text-lg">
-            <i class="fa-solid fa-spinner"></i>
+          <div class="w-10 h-10 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
           </div>
         </div>
 
-        <div class="bg-white p-4 rounded-xl border border-slate-200/80 shadow-sm flex items-center justify-between">
+        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
           <div>
             <p class="text-xs font-medium text-slate-500">完了済み</p>
             <p id="stat-completed" class="text-2xl font-bold text-emerald-600 mt-1">0</p>
           </div>
-          <div class="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center text-lg">
-            <i class="fa-solid fa-circle-check"></i>
+          <div class="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
           </div>
         </div>
 
-        <div class="bg-white p-4 rounded-xl border border-slate-200/80 shadow-sm flex items-center justify-between">
+        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
           <div>
             <p class="text-xs font-medium text-slate-500">高優先度</p>
             <p id="stat-high" class="text-2xl font-bold text-rose-600 mt-1">0</p>
           </div>
-          <div class="w-10 h-10 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center text-lg">
-            <i class="fa-solid fa-fire"></i>
+          <div class="w-10 h-10 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z"/></svg>
           </div>
         </div>
       </div>
@@ -221,7 +247,7 @@ service cloud.firestore {
               <option value="その他">📌 その他</option>
             </select>
             <button type="submit" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm rounded-lg shadow-sm transition flex items-center justify-center whitespace-nowrap">
-              <i class="fa-solid fa-plus mr-1.5"></i>追加
+              <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>追加
             </button>
           </div>
         </form>
@@ -241,18 +267,18 @@ service cloud.firestore {
         <!-- Search & Priority Filter -->
         <div class="flex items-center space-x-2">
           <div class="relative flex-grow sm:w-48">
-            <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-400 text-xs"></i>
+            <svg class="w-4 h-4 absolute left-3 top-2.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
             <input 
               type="text" 
               id="search-input" 
               placeholder="検索..." 
-              class="w-full pl-8 pr-3 py-1.5 text-xs rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              class="w-full pl-9 pr-3 py-1.5 text-xs rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
           <select id="filter-priority" class="px-2.5 py-1.5 rounded-lg border border-slate-300 text-xs bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-700">
             <option value="all">全優先度</option>
             <option value="high">高のみ</option>
-            <option value="medium">中の位</option>
+            <option value="medium">中のみ</option>
             <option value="low">低のみ</option>
           </select>
         </div>
@@ -260,16 +286,16 @@ service cloud.firestore {
 
       <!-- Task Cards Container -->
       <div id="tasks-container" class="space-y-3 min-h-[200px]">
-        <!-- Tasks will be dynamically rendered here -->
+        <!-- Dynamic Tasks -->
       </div>
 
       <!-- Empty State -->
       <div id="empty-state" class="hidden text-center py-16 bg-white rounded-xl border border-dashed border-slate-300 p-8">
-        <div class="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center text-slate-400 mx-auto text-2xl mb-3">
-          <i class="fa-regular fa-clipboard"></i>
+        <div class="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center text-slate-400 mx-auto mb-3">
+          <svg class="w-8 h-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
         </div>
         <h3 class="font-semibold text-slate-700 text-base">タスクが見つかりません</h3>
-        <p class="text-xs text-slate-500 mt-1">新しいタスクを追加するか、フィルター条件を変更してください。</p>
+        <p class="text-xs text-slate-500 mt-1">新しいタスクを追加するか、検索条件を変更してください。</p>
       </div>
 
     </div>
@@ -280,10 +306,10 @@ service cloud.firestore {
     <div class="bg-white rounded-2xl shadow-xl max-w-lg w-full p-6 space-y-4 border border-slate-100">
       <div class="flex items-center justify-between border-b border-slate-100 pb-3">
         <h3 class="font-bold text-slate-800 text-lg flex items-center">
-          <i class="fa-solid fa-pen-to-square text-blue-600 mr-2"></i>タスクを編集
+          <svg class="w-5 h-5 text-blue-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>タスクを編集
         </h3>
         <button id="btn-close-edit" class="text-slate-400 hover:text-slate-600 p-1 rounded-lg">
-          <i class="fa-solid fa-xmark text-lg"></i>
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
         </button>
       </div>
 
@@ -350,54 +376,36 @@ service cloud.firestore {
     <div class="bg-white rounded-2xl shadow-xl max-w-2xl w-full p-6 space-y-5 max-h-[90vh] overflow-y-auto custom-scrollbar">
       <div class="flex items-center justify-between border-b border-slate-100 pb-3">
         <h3 class="font-bold text-slate-900 text-lg flex items-center">
-          <i class="fa-solid fa-rocket text-blue-600 mr-2"></i>GitHub Pages 公開ガイド
+          <svg class="w-5 h-5 text-blue-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>GitHub Pages 公開ガイド
         </h3>
         <button id="btn-close-guide" class="text-slate-400 hover:text-slate-600 p-1 rounded-lg">
-          <i class="fa-solid fa-xmark text-lg"></i>
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
         </button>
       </div>
 
       <div class="space-y-4 text-xs sm:text-sm text-slate-600">
         <div class="bg-blue-50 border border-blue-200 rounded-xl p-4 text-blue-900 space-y-1">
-          <h4 class="font-bold flex items-center"><i class="fa-solid fa-circle-check mr-1.5 text-blue-600"></i>Firebaseの設定は完了しています！</h4>
-          <p>この HTML コードにはお客様の Firebase Config 情報が既にセットアップされています。</p>
+          <h4 class="font-bold flex items-center"><svg class="w-4 h-4 mr-1.5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>Firebaseの設定完了済み</h4>
+          <p>お客様の Firebase 設定 (saino-chokubai-7448c) は既に埋め込まれています。</p>
         </div>
 
         <div class="space-y-3">
           <h4 class="font-bold text-slate-800 text-sm border-b pb-1">ステップ1: GitHub Pages への公開手順</h4>
           <ol class="list-decimal list-inside space-y-1.5 pl-1">
             <li>GitHub で新しいリポジトリを作成します（例: <code class="bg-slate-100 px-1 py-0.5 rounded text-rose-600">my-task-app</code>）。</li>
-            <li>このファイルを <b><code>index.html</code></b> という名前でリポジトリの直下にコミット・プッシュします。</li>
-            <li>GitHub の <b>Settings > Pages</b> に移動し、Branch を <b><code>main</code> (または master) / <code>root</code></b> に設定して Save します。</li>
-            <li>数分で <code>https://&lt;ユーザー名&gt;.github.io/&lt;リポジトリ名&gt;/</code> でWebサイトが公開されます。</li>
+            <li>このコードを <b><code>index.html</code></b> という名前でリポジトリの直下にコミット・プッシュします。</li>
+            <li>GitHub の <b>Settings > Pages</b> に移動し、Branch を <b><code>main</code> / <code>root</code></b> に設定して Save します。</li>
           </ol>
         </div>
 
         <div class="space-y-3">
           <h4 class="font-bold text-slate-800 text-sm border-b pb-1">ステップ2: Firebase 承認済みドメインの登録 (重要!)</h4>
-          <p>Google ログインを GitHub Pages 上で機能させるため、以下のドメイン許可設定を行ってください。</p>
+          <p>Google ログインを機能させるため、以下のドメインを許可設定してください。</p>
           <ol class="list-decimal list-inside space-y-1.5 pl-1">
-            <li><a href="https://console.firebase.google.com/" target="_blank" class="text-blue-600 underline hover:text-blue-800">Firebase Console</a> にアクセスし、プロジェクト <code>saino-chokubai-7448c</code> を開きます。</li>
-            <li>左メニューから <b>Authentication > 設定 > 承認済みドメイン (Authorized domains)</b> タブを開きます。</li>
+            <li><a href="https://console.firebase.google.com/" target="_blank" class="text-blue-600 underline font-semibold">Firebase Console</a> にアクセスし、プロジェクトを開きます。</li>
+            <li>左メニュー <b>Authentication > 設定 > 承認済みドメイン (Authorized domains)</b> タブを開きます。</li>
             <li><b>「ドメインの追加」</b> をクリックし、GitHub Pages のドメイン（例: <b><code>username.github.io</code></b>）を入力して保存します。</li>
           </ol>
-        </div>
-
-        <div class="space-y-3">
-          <h4 class="font-bold text-slate-800 text-sm border-b pb-1">ステップ3: Cloud Firestore のデータベース作成</h4>
-          <p>タスク保存のため Firestore の初期化をしていない場合は以下を実施してください。</p>
-          <ol class="list-decimal list-inside space-y-1.5 pl-1">
-            <li>Firebase Console の <b>Firestore Database</b> に移動し「データベースの作成」を実行。</li>
-            <li>「テストモードで開始」または以下のルールをルールタブに設定:</li>
-          </ol>
-          <pre class="bg-slate-900 text-slate-100 p-3 rounded-lg text-xs overflow-x-auto mt-2">rules_version = '2';
-service cloud.firestore {
-  match /databases/{database}/documents {
-    match /users/{userId}/tasks/{taskId} {
-      allow read, write: if request.auth != null && request.auth.uid == userId;
-    }
-  }
-}</pre>
         </div>
       </div>
 
@@ -407,7 +415,6 @@ service cloud.firestore {
     </div>
   </div>
 
-  <!-- Firebase SDK Modular Import -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
     import { 
@@ -446,7 +453,7 @@ service cloud.firestore {
     const db = getFirestore(app);
     const googleProvider = new GoogleAuthProvider();
 
-    // Application State Variables
+    // Explicit State Variables Declaration
     let currentUser = null;
     let unsubscribeSnapshot = null;
     let allTasks = [];
@@ -454,8 +461,17 @@ service cloud.firestore {
     let currentPriorityFilter = 'all';
     let currentSearchTerm = '';
 
-    // DOM Elements
+    // DOM Elements Declaration
     const firestoreErrorBanner = document.getElementById('firestore-error-banner');
+    const authErrorBanner = document.getElementById('auth-error-banner');
+    const currentHostname = document.getElementById('current-hostname');
+    const btnCopyDomain = document.getElementById('btn-copy-domain');
+
+    // Display current domain on load for quick configuration
+    if (currentHostname) {
+      currentHostname.textContent = window.location.hostname || window.location.host;
+    }
+
     const loadingScreen = document.getElementById('loading-screen');
     const authView = document.getElementById('auth-view');
     const appView = document.getElementById('app-view');
@@ -505,9 +521,37 @@ service cloud.firestore {
     const btnCloseGuide = document.getElementById('btn-close-guide');
     const btnGuideOk = document.getElementById('btn-guide-ok');
 
+    function handleAuthError(error) {
+      console.error("Google Auth Error:", error);
+      if (error && (error.code === 'auth/unauthorized-domain' || (error.message && error.message.includes('unauthorized-domain')))) {
+        if (currentHostname) {
+          currentHostname.textContent = window.location.hostname || window.location.host;
+        }
+        if (authErrorBanner) {
+          authErrorBanner.classList.remove('hidden');
+        }
+      }
+    }
+
+    if (btnCopyDomain) {
+      btnCopyDomain.addEventListener('click', () => {
+        const text = currentHostname.textContent;
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        alert('ドメイン名をコピーしました: ' + text);
+      });
+    }
+
     // Check Redirect Login Results
     getRedirectResult(auth).catch((error) => {
-      console.warn("Redirect login error:", error);
+      console.warn("Redirect login result notice:", error);
+      if (error && error.code === 'auth/unauthorized-domain') {
+        handleAuthError(error);
+      }
     });
 
     // Auth State Changed Observer
@@ -515,7 +559,7 @@ service cloud.firestore {
       loadingScreen.classList.add('hidden');
       if (user) {
         currentUser = user;
-        userAvatar.src = user.photoURL || 'https://via.placeholder.com/40';
+        userAvatar.src = user.photoURL || 'https://placehold.co/40x40/3b82f6/ffffff?text=U';
         userName.textContent = user.displayName || user.email;
         userProfile.classList.remove('hidden');
         authView.classList.add('hidden');
@@ -537,15 +581,19 @@ service cloud.firestore {
 
     // Login with Google Popup & Redirect Fallback
     btnLoginGoogle.addEventListener('click', async () => {
+      if (authErrorBanner) authErrorBanner.classList.add('hidden');
       try {
         await signInWithPopup(auth, googleProvider);
       } catch (error) {
-        console.warn("Popup blocked or COOP error. Falling back to Redirect mode...", error);
+        if (error.code === 'auth/unauthorized-domain') {
+          handleAuthError(error);
+          return;
+        }
+        console.warn("Popup blocked or COOP notice. Falling back to Redirect mode...", error);
         try {
           await signInWithRedirect(auth, googleProvider);
         } catch (redirectErr) {
-          console.error("Google Auth Error:", redirectErr);
-          alert("ログイン処理中にエラーが発生しました。\nFirebase Console の「承認済みドメイン」にドメインが追加されているか確認してください。");
+          handleAuthError(redirectErr);
         }
       }
     });
@@ -581,10 +629,12 @@ service cloud.firestore {
         renderApp();
       }, (error) => {
         console.error("Firestore snapshot error:", error);
-        if (error.code === 'permission-denied' || error.message.includes('Missing or insufficient permissions')) {
-          firestoreErrorBanner.classList.remove('hidden');
-        }
+        showPermissionError();
       });
+    }
+
+    function showPermissionError() {
+      firestoreErrorBanner.classList.remove('hidden');
     }
 
     // Add New Quick Task
@@ -598,9 +648,9 @@ service cloud.firestore {
         await addDoc(tasksRef, {
           title: title,
           description: '',
-          status: 'todo', // 'todo', 'in_progress', 'done'
-          priority: quickPriority.value, // 'low', 'medium', 'high'
-          category: quickCategory.value, // '仕事', 'プライベート', '勉強', 'その他'
+          status: 'todo', 
+          priority: quickPriority.value, 
+          category: quickCategory.value, 
           dueDate: '',
           createdAt: serverTimestamp()
         });
@@ -608,10 +658,11 @@ service cloud.firestore {
         quickTitle.value = '';
       } catch (err) {
         console.error("Error adding task:", err);
+        showPermissionError();
       }
     });
 
-    // Toggle Task Status (Checkbox or button)
+    // Toggle Task Status
     async function toggleTaskStatus(taskId, currentStatus) {
       if (!currentUser) return;
       const newStatus = currentStatus === 'done' ? 'todo' : 'done';
@@ -622,6 +673,7 @@ service cloud.firestore {
         });
       } catch (err) {
         console.error("Error updating task status:", err);
+        showPermissionError();
       }
     }
 
@@ -635,19 +687,20 @@ service cloud.firestore {
         });
       } catch (err) {
         console.error("Error updating status:", err);
+        showPermissionError();
       }
     }
 
     // Delete Task
     async function deleteTask(taskId) {
       if (!currentUser) return;
-      if (!confirm("このタスクを削除しますか？")) return;
 
       try {
         const taskDocRef = doc(db, 'users', currentUser.uid, 'tasks', taskId);
         await deleteDoc(taskDocRef);
       } catch (err) {
         console.error("Error deleting task:", err);
+        showPermissionError();
       }
     }
 
@@ -666,15 +719,8 @@ service cloud.firestore {
 
       // 2. Filter tasks based on current tab, priority dropdown, search query
       const filtered = allTasks.filter(task => {
-        // Status Filter
-        if (currentFilterStatus !== 'all' && task.status !== currentFilterStatus) {
-          return false;
-        }
-        // Priority Filter
-        if (currentPriorityFilter !== 'all' && task.priority !== currentPriorityFilter) {
-          return false;
-        }
-        // Search Term
+        if (currentFilterStatus !== 'all' && task.status !== currentFilterStatus) return false;
+        if (currentPriorityFilter !== 'all' && task.priority !== currentPriorityFilter) return false;
         if (currentSearchTerm) {
           const matchTitle = (task.title || '').toLowerCase().includes(currentSearchTerm);
           const matchDesc = (task.description || '').toLowerCase().includes(currentSearchTerm);
@@ -705,18 +751,14 @@ service cloud.firestore {
         isDone ? 'border-slate-200 bg-slate-50/70' : 'border-slate-200 hover:border-blue-300'
       }`;
 
-      // Priority Badge Styles
       const priorityMap = {
         high: { label: '高', bg: 'bg-rose-100 text-rose-700' },
         medium: { label: '中', bg: 'bg-amber-100 text-amber-700' },
         low: { label: '低', bg: 'bg-emerald-100 text-emerald-700' }
       };
       const prioObj = priorityMap[task.priority] || priorityMap.medium;
-
-      // Category Icon/Label
       const catLabel = task.category || '📌 その他';
 
-      // Due Date text formatting
       let dueDateHtml = '';
       if (task.dueDate) {
         const today = new Date().toISOString().split('T')[0];
@@ -730,7 +772,6 @@ service cloud.firestore {
 
       card.innerHTML = `
         <div class="flex items-start space-x-3 flex-grow">
-          <!-- Checkbox Toggle -->
           <button class="btn-check mt-0.5 text-slate-400 hover:text-blue-600 transition flex-shrink-0">
             ${isDone 
               ? `<svg class="w-5 h-5 text-emerald-500 fill-current" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>`
@@ -742,7 +783,6 @@ service cloud.firestore {
             <div class="flex flex-wrap items-center gap-2">
               <h4 class="font-semibold text-sm text-slate-800 ${isDone ? 'line-through text-slate-400' : ''}">${escapeHtml(task.title)}</h4>
               
-              <!-- Badges -->
               <span class="text-[11px] font-bold px-2 py-0.5 rounded-full ${prioObj.bg}">
                 ${prioObj.label}
               </span>
@@ -758,7 +798,6 @@ service cloud.firestore {
           </div>
         </div>
 
-        <!-- Right Control Actions -->
         <div class="flex items-center space-x-2 pt-2 sm:pt-0 border-t sm:border-0 border-slate-100 justify-end flex-shrink-0">
           <select class="status-select text-xs px-2 py-1 rounded border border-slate-200 bg-slate-50 text-slate-600 focus:outline-none">
             <option value="todo" ${task.status === 'todo' ? 'selected' : ''}>未着手</option>
@@ -776,7 +815,6 @@ service cloud.firestore {
         </div>
       `;
 
-      // Attach Card Event Listeners
       card.querySelector('.btn-check').addEventListener('click', () => toggleTaskStatus(task.id, task.status));
       card.querySelector('.status-select').addEventListener('change', (e) => updateStatus(task.id, e.target.value));
       card.querySelector('.btn-delete').addEventListener('click', () => deleteTask(task.id));
@@ -852,17 +890,13 @@ service cloud.firestore {
         closeEditModal();
       } catch (err) {
         console.error("Error editing task:", err);
+        showPermissionError();
       }
     });
 
     btnGuideModal.addEventListener('click', () => modalGuide.classList.remove('hidden'));
     btnCloseGuide.addEventListener('click', () => modalGuide.classList.add('hidden'));
     btnGuideOk.addEventListener('click', () => modalGuide.classList.add('hidden'));
-
-    // Utility: Simple Alert Modal Helper
-    function alertModal(msg) {
-      window.alert(msg);
-    }
 
     // Utility: HTML Escape Sanitizer
     function escapeHtml(str) {
