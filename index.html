@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>タスク管理 Pro | Firebase & GitHub Pages</title>
-  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Inline SVG Favicon -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✅</text></svg>">
@@ -64,7 +63,7 @@
         </div>
         <div>
           <h1 class="font-bold text-lg text-slate-900 leading-tight">TaskFlow <span class="text-xs px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 font-semibold ml-1">Pro</span></h1>
-          <p class="text-xs text-slate-500">Firebase & GitHub Pages Task App</p>
+          <p class="text-xs text-slate-500">Firebase (task) & GitHub Pages App</p>
         </div>
       </div>
 
@@ -97,26 +96,26 @@
         <svg class="w-7 h-7 text-amber-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
         <div class="space-y-1">
           <h4 class="font-bold text-base text-amber-900">⚠️ ドメイン承認エラー (auth/unauthorized-domain)</h4>
-          <p class="text-xs text-amber-800">現在のドメイン（Webサイトのアドレス）が Firebase Authentication の承認済みドメインに登録されていません。</p>
+          <p class="text-xs text-amber-800">現在のドメインが Firebase Authentication の承認済みドメインに登録されていません。</p>
         </div>
       </div>
       <div class="bg-slate-900 text-slate-100 p-4 rounded-xl text-xs space-y-2">
-        <p class="text-amber-300 font-semibold text-xs">【追加が必要な現在のドメイン】</p>
-        <div class="flex items-center space-x-2">
-          <code id="current-hostname" class="font-mono text-emerald-400 font-bold bg-slate-950 px-3 py-1.5 rounded border border-slate-800 text-xs select-all flex-grow"></code>
-          <button id="btn-copy-domain" type="button" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded font-medium text-xs transition">ドメイン名をコピー</button>
-        </div>
-        <p class="text-amber-300 font-semibold text-xs pt-2">【設定手順（約30秒）】</p>
+        <p class="text-amber-300 font-semibold text-xs">【設定手順（約30秒）】</p>
         <ol class="list-decimal list-inside text-slate-300 text-[11px] space-y-1">
-          <li><a href="https://console.firebase.google.com/" target="_blank" class="text-blue-400 underline font-semibold">Firebase Console</a> ＞ プロジェクト <code class="text-emerald-400">saino-chokubai-7448c</code></li>
+          <li><a href="https://console.firebase.google.com/" target="_blank" class="text-blue-400 underline font-semibold">Firebase Console</a> ＞ プロジェクト <code class="text-emerald-400">task</code></li>
           <li>左メニュー <b>Authentication</b> ＞ <b>「設定」</b> ＞ <b>「承認済みドメイン」</b> タブを開く</li>
-          <li><b>「ドメインの追加」</b> をクリックし、上記でコピーしたドメイン名を貼り付けて保存してください</li>
+          <li><b>「ドメインの追加」</b> をクリックし、表示されたドメイン名を追加してください：
+            <div class="mt-2 flex items-center space-x-2">
+              <code id="current-domain-code" class="bg-slate-800 text-emerald-400 px-2 py-1 rounded text-xs select-all">--</code>
+              <button id="btn-copy-domain" class="px-2.5 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded text-xs font-medium transition">ドメイン名をコピー</button>
+            </div>
+          </li>
         </ol>
       </div>
     </div>
 
     <!-- Firestore Permission Alert Banner -->
-    <div id="firestore-error-banner" class="hidden mb-6 bg-rose-50 border-2 border-rose-300 rounded-2xl p-5 text-rose-900 shadow-md space-y-3 animate-pulse">
+    <div id="firestore-error-banner" class="hidden mb-6 bg-rose-50 border-2 border-rose-300 rounded-2xl p-5 text-rose-900 shadow-md space-y-3">
       <div class="flex items-start space-x-3">
         <svg class="w-7 h-7 text-rose-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
         <div class="space-y-1">
@@ -127,8 +126,8 @@
       <div class="bg-slate-900 text-slate-100 p-4 rounded-xl text-xs space-y-2">
         <p class="text-amber-300 font-semibold text-xs">【解決手順（約1分）】</p>
         <ol class="list-decimal list-inside text-slate-300 text-[11px] space-y-1">
-          <li><a href="https://console.firebase.google.com/" target="_blank" class="text-blue-400 underline font-semibold">Firebase Console</a> ＞ プロジェクト <code class="text-emerald-400">saino-chokubai-7448c</code> を開く</li>
-          <li>左メニュー <b>Firestore Database</b>（※Realtime Databaseではありません）＞ <b>「ルール」</b> タブをクリック</li>
+          <li><a href="https://console.firebase.google.com/" target="_blank" class="text-blue-400 underline font-semibold">Firebase Console</a> ＞ プロジェクト <code class="text-emerald-400">task</code> を開く</li>
+          <li>左メニュー <b>Firestore Database</b> ＞ <b>「ルール」</b> タブをクリック</li>
           <li>以下のコードを貼り付けて右上 <b>「公開」</b> ボタンを押してください</li>
         </ol>
         <pre id="rule-code" class="font-mono text-emerald-400 select-all overflow-x-auto p-2 bg-slate-950 rounded border border-slate-800 text-[11px]">rules_version = '2';
@@ -148,6 +147,7 @@ service cloud.firestore {
       <p class="text-sm text-slate-500 font-medium">Firebase 認証状態を確認中...</p>
     </div>
 
+    <!-- Auth Login View -->
     <div id="auth-view" class="hidden max-w-md mx-auto py-10">
       <div class="bg-white rounded-2xl shadow-xl border border-slate-100 p-8 text-center space-y-6">
         <div class="w-16 h-16 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mx-auto text-2xl shadow-inner">
@@ -167,18 +167,10 @@ service cloud.firestore {
           </svg>
           <span class="font-semibold text-slate-700">Google でログイン</span>
         </button>
-
-        <!-- GitHub Pages Note -->
-        <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 text-left text-xs text-amber-800 space-y-1">
-          <p class="font-bold flex items-center">
-            <svg class="w-4 h-4 mr-1.5 text-amber-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
-            GitHub Pages での注意点
-          </p>
-          <p>GitHub Pages 公開時にログインエラーが出る場合は、Firebase Console の <b>「Authentication > 設定 > 承認済みドメイン」</b> にご自身のドメイン（例: <code>username.github.io</code>）を追加してください。</p>
-        </div>
       </div>
     </div>
 
+    <!-- Application Dashboard View -->
     <div id="app-view" class="hidden space-y-6">
 
       <!-- Stats Overview Cards -->
@@ -385,25 +377,25 @@ service cloud.firestore {
 
       <div class="space-y-4 text-xs sm:text-sm text-slate-600">
         <div class="bg-blue-50 border border-blue-200 rounded-xl p-4 text-blue-900 space-y-1">
-          <h4 class="font-bold flex items-center"><svg class="w-4 h-4 mr-1.5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>Firebaseの設定完了済み</h4>
-          <p>お客様の Firebase 設定 (saino-chokubai-7448c) は既に埋め込まれています。</p>
+          <h4 class="font-bold flex items-center"><svg class="w-4 h-4 mr-1.5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>Firebase 設定 (task)</h4>
+          <p>このアプリは Firebase プロジェクト <code class="bg-blue-100 font-mono px-1 rounded">task</code> に接続しています。</p>
         </div>
 
         <div class="space-y-3">
           <h4 class="font-bold text-slate-800 text-sm border-b pb-1">ステップ1: GitHub Pages への公開手順</h4>
           <ol class="list-decimal list-inside space-y-1.5 pl-1">
             <li>GitHub で新しいリポジトリを作成します（例: <code class="bg-slate-100 px-1 py-0.5 rounded text-rose-600">my-task-app</code>）。</li>
-            <li>このコードを <b><code>index.html</code></b> という名前でリポジトリの直下にコミット・プッシュします。</li>
+            <li>このコードを <b><code>index.html</code></b> という名前でリポジトリの直下に保存してコミット・プッシュします。</li>
             <li>GitHub の <b>Settings > Pages</b> に移動し、Branch を <b><code>main</code> / <code>root</code></b> に設定して Save します。</li>
           </ol>
         </div>
 
         <div class="space-y-3">
           <h4 class="font-bold text-slate-800 text-sm border-b pb-1">ステップ2: Firebase 承認済みドメインの登録 (重要!)</h4>
-          <p>Google ログインを機能させるため、以下のドメインを許可設定してください。</p>
+          <p>Google ログインを許可するため、ご自身のドメインを承認登録してください。</p>
           <ol class="list-decimal list-inside space-y-1.5 pl-1">
-            <li><a href="https://console.firebase.google.com/" target="_blank" class="text-blue-600 underline font-semibold">Firebase Console</a> にアクセスし、プロジェクトを開きます。</li>
-            <li>左メニュー <b>Authentication > 設定 > 承認済みドメイン (Authorized domains)</b> タブを開きます。</li>
+            <li><a href="https://console.firebase.google.com/" target="_blank" class="text-blue-600 underline font-semibold">Firebase Console</a> にアクセスし、プロジェクト <b><code>task</code></b> を開きます。</li>
+            <li>左メニュー <b>Authentication > 設定 > 承認済みドメイン</b> タブを開きます。</li>
             <li><b>「ドメインの追加」</b> をクリックし、GitHub Pages のドメイン（例: <b><code>username.github.io</code></b>）を入力して保存します。</li>
           </ol>
         </div>
@@ -437,12 +429,12 @@ service cloud.firestore {
       serverTimestamp 
     } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-    // User provided Firebase Config
+    // Firebase Config for `task` project
     const firebaseConfig = {
       apiKey: "AIzaSyDE-vmPbNU-Q0ERi_9ALm6wQWrgfHuOr2Y",
-      authDomain: "saino-chokubai-7448c.firebaseapp.com",
-      projectId: "saino-chokubai-7448c",
-      storageBucket: "saino-chokubai-7448c.firebasestorage.app",
+      authDomain: "task.firebaseapp.com",
+      projectId: "task",
+      storageBucket: "task.firebasestorage.app",
       messagingSenderId: "975883222366",
       appId: "1:975883222366:web:6a061fc256d68d851e23cf"
     };
@@ -451,27 +443,16 @@ service cloud.firestore {
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
-    const googleProvider = new GoogleAuthProvider();
+    const provider = new GoogleAuthProvider();
 
-    // Explicit State Variables Declaration
     let currentUser = null;
     let unsubscribeSnapshot = null;
     let allTasks = [];
     let currentFilterStatus = 'all';
-    let currentPriorityFilter = 'all';
+    let currentFilterPriority = 'all';
     let currentSearchTerm = '';
 
-    // DOM Elements Declaration
-    const firestoreErrorBanner = document.getElementById('firestore-error-banner');
-    const authErrorBanner = document.getElementById('auth-error-banner');
-    const currentHostname = document.getElementById('current-hostname');
-    const btnCopyDomain = document.getElementById('btn-copy-domain');
-
-    // Display current domain on load for quick configuration
-    if (currentHostname) {
-      currentHostname.textContent = window.location.hostname || window.location.host;
-    }
-
+    // DOM Elements
     const loadingScreen = document.getElementById('loading-screen');
     const authView = document.getElementById('auth-view');
     const appView = document.getElementById('app-view');
@@ -480,177 +461,155 @@ service cloud.firestore {
     const userName = document.getElementById('user-name');
     const btnLoginGoogle = document.getElementById('btn-login-google');
     const btnLogout = document.getElementById('btn-logout');
-    const btnGuideModal = document.getElementById('btn-guide-modal');
-
-    // Stats Elements
-    const statTotal = document.getElementById('stat-total');
-    const statPending = document.getElementById('stat-pending');
-    const statCompleted = document.getElementById('stat-completed');
-    const statHigh = document.getElementById('stat-high');
-
-    // Quick Add Form Elements
+    const tasksContainer = document.getElementById('tasks-container');
+    const emptyState = document.getElementById('empty-state');
     const quickAddForm = document.getElementById('quick-add-form');
     const quickTitle = document.getElementById('quick-title');
     const quickPriority = document.getElementById('quick-priority');
     const quickCategory = document.getElementById('quick-category');
-
-    // Filter & Search Elements
-    const filterTabs = document.querySelectorAll('.filter-tab');
-    const filterPrioritySelect = document.getElementById('filter-priority');
     const searchInput = document.getElementById('search-input');
-
-    // Main Display Elements
-    const tasksContainer = document.getElementById('tasks-container');
-    const emptyState = document.getElementById('empty-state');
-
-    // Edit Modal Elements
+    const filterPrioritySelect = document.getElementById('filter-priority');
     const modalEdit = document.getElementById('modal-edit');
     const editTaskForm = document.getElementById('edit-task-form');
-    const editId = document.getElementById('edit-id');
-    const editTitle = document.getElementById('edit-title');
-    const editDescription = document.getElementById('edit-description');
-    const editStatus = document.getElementById('edit-status');
-    const editPriority = document.getElementById('edit-priority');
-    const editCategory = document.getElementById('edit-category');
-    const editDuedate = document.getElementById('edit-duedate');
     const btnCloseEdit = document.getElementById('btn-close-edit');
     const btnCancelEdit = document.getElementById('btn-cancel-edit');
-
-    // Guide Modal Elements
     const modalGuide = document.getElementById('modal-guide');
+    const btnGuideModal = document.getElementById('btn-guide-modal');
     const btnCloseGuide = document.getElementById('btn-close-guide');
     const btnGuideOk = document.getElementById('btn-guide-ok');
+    const authErrorBanner = document.getElementById('auth-error-banner');
+    const currentDomainCode = document.getElementById('current-domain-code');
+    const btnCopyDomain = document.getElementById('btn-copy-domain');
+    const firestoreErrorBanner = document.getElementById('firestore-error-banner');
 
-    function handleAuthError(error) {
-      console.error("Google Auth Error:", error);
-      if (error && (error.code === 'auth/unauthorized-domain' || (error.message && error.message.includes('unauthorized-domain')))) {
-        if (currentHostname) {
-          currentHostname.textContent = window.location.hostname || window.location.host;
-        }
-        if (authErrorBanner) {
-          authErrorBanner.classList.remove('hidden');
-        }
-      }
+    // Display current domain on load
+    if (currentDomainCode) {
+      currentDomainCode.textContent = window.location.hostname || 'localhost';
     }
 
-    if (btnCopyDomain) {
-      btnCopyDomain.addEventListener('click', () => {
-        const text = currentHostname.textContent;
-        const textarea = document.createElement('textarea');
-        textarea.value = text;
-        document.body.appendChild(textarea);
-        textarea.select();
-        document.execCommand('copy');
-        document.body.removeChild(textarea);
-        alert('ドメイン名をコピーしました: ' + text);
-      });
-    }
-
-    // Check Redirect Login Results
-    getRedirectResult(auth).catch((error) => {
-      console.warn("Redirect login result notice:", error);
-      if (error && error.code === 'auth/unauthorized-domain') {
-        handleAuthError(error);
-      }
-    });
-
-    // Auth State Changed Observer
-    onAuthStateChanged(auth, (user) => {
+    // Auth Listener
+    onAuthStateChanged(auth, async (user) => {
       loadingScreen.classList.add('hidden');
       if (user) {
         currentUser = user;
-        userAvatar.src = user.photoURL || 'https://placehold.co/40x40/3b82f6/ffffff?text=U';
-        userName.textContent = user.displayName || user.email;
-        userProfile.classList.remove('hidden');
         authView.classList.add('hidden');
         appView.classList.remove('hidden');
+        userProfile.classList.remove('hidden');
+        
+        userAvatar.src = user.photoURL || 'https://via.placeholder.com/32';
+        userName.textContent = user.displayName || user.email;
 
-        // Subscribe to Firestore Realtime Task Data
-        subscribeTasks(user.uid);
+        // Hide auth error banner if visible
+        authErrorBanner.classList.add('hidden');
+
+        // Subscribe to Firestore tasks
+        subscribeToTasks(user.uid);
       } else {
         currentUser = null;
-        userProfile.classList.add('hidden');
-        appView.classList.add('hidden');
+        if (unsubscribeSnapshot) unsubscribeSnapshot();
         authView.classList.remove('hidden');
-        if (unsubscribeSnapshot) {
-          unsubscribeSnapshot();
-          unsubscribeSnapshot = null;
-        }
+        appView.classList.add('hidden');
+        userProfile.classList.add('hidden');
       }
     });
 
-    // Login with Google Popup & Redirect Fallback
+    // Handle Google Login with popup and fallback to redirect
     btnLoginGoogle.addEventListener('click', async () => {
-      if (authErrorBanner) authErrorBanner.classList.add('hidden');
+      authErrorBanner.classList.add('hidden');
       try {
-        await signInWithPopup(auth, googleProvider);
+        await signInWithPopup(auth, provider);
       } catch (error) {
+        console.warn("Popup authentication warning/error:", error);
         if (error.code === 'auth/unauthorized-domain') {
-          handleAuthError(error);
-          return;
-        }
-        console.warn("Popup blocked or COOP notice. Falling back to Redirect mode...", error);
-        try {
-          await signInWithRedirect(auth, googleProvider);
-        } catch (redirectErr) {
-          handleAuthError(redirectErr);
+          authErrorBanner.classList.remove('hidden');
+        } else {
+          // Fallback to redirect authentication
+          try {
+            await signInWithRedirect(auth, provider);
+          } catch (redirectErr) {
+            console.error("Redirect login error:", redirectErr);
+            if (redirectErr.code === 'auth/unauthorized-domain') {
+              authErrorBanner.classList.remove('hidden');
+            }
+          }
         }
       }
     });
 
-    // Logout
+    // Handle Logout
     btnLogout.addEventListener('click', async () => {
       try {
         await signOut(auth);
-      } catch (error) {
-        console.error("Sign out error:", error);
+      } catch (err) {
+        console.error("Logout Error:", err);
       }
     });
 
-    // Firestore Collection Subscription
-    function subscribeTasks(userId) {
+    // Copy Domain Helper
+    if (btnCopyDomain) {
+      btnCopyDomain.addEventListener('click', () => {
+        const domain = window.location.hostname || 'localhost';
+        navigator.clipboard.writeText(domain).then(() => {
+          btnCopyDomain.textContent = 'コピーしました！';
+          setTimeout(() => { btnCopyDomain.textContent = 'ドメイン名をコピー'; }, 2000);
+        }).catch(() => {
+          document.execCommand('copy');
+          btnCopyDomain.textContent = 'コピーしました！';
+          setTimeout(() => { btnCopyDomain.textContent = 'ドメイン名をコピー'; }, 2000);
+        });
+      });
+    }
+
+    // Realtime Firestore Subscription
+    function subscribeToTasks(userId) {
       if (unsubscribeSnapshot) unsubscribeSnapshot();
 
-      const tasksRef = collection(db, 'users', userId, 'tasks');
-
-      unsubscribeSnapshot = onSnapshot(tasksRef, (snapshot) => {
-        firestoreErrorBanner.classList.add('hidden'); // Clear banner on success
+      const userTasksRef = collection(db, 'users', userId, 'tasks');
+      
+      unsubscribeSnapshot = onSnapshot(userTasksRef, (snapshot) => {
+        firestoreErrorBanner.classList.add('hidden');
         allTasks = snapshot.docs.map(doc => ({
           id: doc.id,
           ...doc.data()
         }));
 
+        // Sort tasks: pending first, then by createdAt desc
         allTasks.sort((a, b) => {
-          const tA = a.createdAt ? a.createdAt.seconds || 0 : 0;
-          const tB = b.createdAt ? b.createdAt.seconds || 0 : 0;
-          return tB - tA;
+          if (a.status === 'done' && b.status !== 'done') return 1;
+          if (a.status !== 'done' && b.status === 'done') return -1;
+          const timeA = a.createdAt?.toMillis ? a.createdAt.toMillis() : Date.now();
+          const timeB = b.createdAt?.toMillis ? b.createdAt.toMillis() : Date.now();
+          return timeB - timeA;
         });
 
-        renderApp();
+        updateStats();
+        renderTasks();
       }, (error) => {
         console.error("Firestore snapshot error:", error);
-        showPermissionError();
+        if (error.code === 'permission-denied') {
+          firestoreErrorBanner.classList.remove('hidden');
+        }
       });
     }
 
-    function showPermissionError() {
-      firestoreErrorBanner.classList.remove('hidden');
-    }
-
-    // Add New Quick Task
+    // Add New Task
     quickAddForm.addEventListener('submit', async (e) => {
       e.preventDefault();
+      if (!currentUser) return;
+
       const title = quickTitle.value.trim();
-      if (!title || !currentUser) return;
+      const priority = quickPriority.value;
+      const category = quickCategory.value;
+
+      if (!title) return;
 
       try {
-        const tasksRef = collection(db, 'users', currentUser.uid, 'tasks');
-        await addDoc(tasksRef, {
-          title: title,
+        await addDoc(collection(db, 'users', currentUser.uid, 'tasks'), {
+          title,
+          priority,
+          category,
+          status: 'todo',
           description: '',
-          status: 'todo', 
-          priority: quickPriority.value, 
-          category: quickCategory.value, 
           dueDate: '',
           createdAt: serverTimestamp()
         });
@@ -658,259 +617,226 @@ service cloud.firestore {
         quickTitle.value = '';
       } catch (err) {
         console.error("Error adding task:", err);
-        showPermissionError();
+        if (err.code === 'permission-denied') {
+          firestoreErrorBanner.classList.remove('hidden');
+        }
       }
     });
 
-    // Toggle Task Status
-    async function toggleTaskStatus(taskId, currentStatus) {
+    // Toggle Status
+    window.toggleTaskStatus = async (taskId, currentStatus) => {
       if (!currentUser) return;
-      const newStatus = currentStatus === 'done' ? 'todo' : 'done';
+      const nextStatus = currentStatus === 'done' ? 'todo' : 'done';
       try {
-        const taskDocRef = doc(db, 'users', currentUser.uid, 'tasks', taskId);
-        await updateDoc(taskDocRef, {
-          status: newStatus
-        });
-      } catch (err) {
-        console.error("Error updating task status:", err);
-        showPermissionError();
-      }
-    }
-
-    // Update Task Status dropdown from card
-    async function updateStatus(taskId, newStatus) {
-      if (!currentUser) return;
-      try {
-        const taskDocRef = doc(db, 'users', currentUser.uid, 'tasks', taskId);
-        await updateDoc(taskDocRef, {
-          status: newStatus
+        await updateDoc(doc(db, 'users', currentUser.uid, 'tasks', taskId), {
+          status: nextStatus,
+          updatedAt: serverTimestamp()
         });
       } catch (err) {
         console.error("Error updating status:", err);
-        showPermissionError();
       }
-    }
+    };
 
     // Delete Task
-    async function deleteTask(taskId) {
+    window.deleteTask = async (taskId) => {
       if (!currentUser) return;
-
       try {
-        const taskDocRef = doc(db, 'users', currentUser.uid, 'tasks', taskId);
-        await deleteDoc(taskDocRef);
+        await deleteDoc(doc(db, 'users', currentUser.uid, 'tasks', taskId));
       } catch (err) {
         console.error("Error deleting task:", err);
-        showPermissionError();
       }
-    }
+    };
 
-    // Render UI & Filter Logic
-    function renderApp() {
-      // 1. Calculate Stats
-      const total = allTasks.length;
-      const completed = allTasks.filter(t => t.status === 'done').length;
-      const pending = total - completed;
-      const highPriority = allTasks.filter(t => t.priority === 'high' && t.status !== 'done').length;
+    // Open Edit Modal
+    window.openEditModal = (taskId) => {
+      const task = allTasks.find(t => t.id === taskId);
+      if (!task) return;
 
-      statTotal.textContent = total;
-      statPending.textContent = pending;
-      statCompleted.textContent = completed;
-      statHigh.textContent = highPriority;
+      document.getElementById('edit-id').value = task.id;
+      document.getElementById('edit-title').value = task.title || '';
+      document.getElementById('edit-description').value = task.description || '';
+      document.getElementById('edit-status').value = task.status || 'todo';
+      document.getElementById('edit-priority').value = task.priority || 'medium';
+      document.getElementById('edit-category').value = task.category || '仕事';
+      document.getElementById('edit-duedate').value = task.dueDate || '';
 
-      // 2. Filter tasks based on current tab, priority dropdown, search query
-      const filtered = allTasks.filter(task => {
-        if (currentFilterStatus !== 'all' && task.status !== currentFilterStatus) return false;
-        if (currentPriorityFilter !== 'all' && task.priority !== currentPriorityFilter) return false;
-        if (currentSearchTerm) {
-          const matchTitle = (task.title || '').toLowerCase().includes(currentSearchTerm);
-          const matchDesc = (task.description || '').toLowerCase().includes(currentSearchTerm);
-          const matchCat = (task.category || '').toLowerCase().includes(currentSearchTerm);
-          if (!matchTitle && !matchDesc && !matchCat) return false;
-        }
-        return true;
-      });
+      modalEdit.classList.remove('hidden');
+    };
 
-      // 3. Render List or Empty State
-      tasksContainer.innerHTML = '';
-      if (filtered.length === 0) {
-        emptyState.classList.remove('hidden');
-      } else {
-        emptyState.classList.add('hidden');
-        filtered.forEach(task => {
-          tasksContainer.appendChild(createTaskCardElement(task));
+    // Close Edit Modal
+    const closeModal = () => modalEdit.classList.add('hidden');
+    btnCloseEdit.addEventListener('click', closeModal);
+    btnCancelEdit.addEventListener('click', closeModal);
+
+    // Save Edited Task
+    editTaskForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!currentUser) return;
+
+      const taskId = document.getElementById('edit-id').value;
+      const title = document.getElementById('edit-title').value.trim();
+      const description = document.getElementById('edit-description').value.trim();
+      const status = document.getElementById('edit-status').value;
+      const priority = document.getElementById('edit-priority').value;
+      const category = document.getElementById('edit-category').value;
+      const dueDate = document.getElementById('edit-duedate').value;
+
+      if (!title || !taskId) return;
+
+      try {
+        await updateDoc(doc(db, 'users', currentUser.uid, 'tasks', taskId), {
+          title,
+          description,
+          status,
+          priority,
+          category,
+          dueDate,
+          updatedAt: serverTimestamp()
         });
+
+        closeModal();
+      } catch (err) {
+        console.error("Error saving task:", err);
       }
-    }
+    });
 
-    // Create Individual Task HTML Card Element
-    function createTaskCardElement(task) {
-      const card = document.createElement('div');
-      const isDone = task.status === 'done';
-      
-      card.className = `bg-white rounded-xl border transition duration-150 p-4 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3 ${
-        isDone ? 'border-slate-200 bg-slate-50/70' : 'border-slate-200 hover:border-blue-300'
-      }`;
-
-      const priorityMap = {
-        high: { label: '高', bg: 'bg-rose-100 text-rose-700' },
-        medium: { label: '中', bg: 'bg-amber-100 text-amber-700' },
-        low: { label: '低', bg: 'bg-emerald-100 text-emerald-700' }
-      };
-      const prioObj = priorityMap[task.priority] || priorityMap.medium;
-      const catLabel = task.category || '📌 その他';
-
-      let dueDateHtml = '';
-      if (task.dueDate) {
-        const today = new Date().toISOString().split('T')[0];
-        const isOverdue = !isDone && task.dueDate < today;
-        dueDateHtml = `
-          <span class="text-xs px-2 py-0.5 rounded ${isOverdue ? 'bg-rose-100 text-rose-700 font-semibold' : 'text-slate-500 bg-slate-100'} flex items-center">
-            <svg class="w-3 h-3 mr-1 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>${task.dueDate} ${isOverdue ? '(期限切れ)' : ''}
-          </span>
-        `;
-      }
-
-      card.innerHTML = `
-        <div class="flex items-start space-x-3 flex-grow">
-          <button class="btn-check mt-0.5 text-slate-400 hover:text-blue-600 transition flex-shrink-0">
-            ${isDone 
-              ? `<svg class="w-5 h-5 text-emerald-500 fill-current" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>`
-              : `<svg class="w-5 h-5 text-slate-300 hover:text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" stroke-width="2"/></svg>`
-            }
-          </button>
-
-          <div class="space-y-1 flex-grow">
-            <div class="flex flex-wrap items-center gap-2">
-              <h4 class="font-semibold text-sm text-slate-800 ${isDone ? 'line-through text-slate-400' : ''}">${escapeHtml(task.title)}</h4>
-              
-              <span class="text-[11px] font-bold px-2 py-0.5 rounded-full ${prioObj.bg}">
-                ${prioObj.label}
-              </span>
-
-              <span class="text-[11px] font-medium px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">
-                ${escapeHtml(catLabel)}
-              </span>
-
-              ${dueDateHtml}
-            </div>
-
-            ${task.description ? `<p class="text-xs text-slate-500 ${isDone ? 'line-through opacity-70' : ''}">${escapeHtml(task.description)}</p>` : ''}
-          </div>
-        </div>
-
-        <div class="flex items-center space-x-2 pt-2 sm:pt-0 border-t sm:border-0 border-slate-100 justify-end flex-shrink-0">
-          <select class="status-select text-xs px-2 py-1 rounded border border-slate-200 bg-slate-50 text-slate-600 focus:outline-none">
-            <option value="todo" ${task.status === 'todo' ? 'selected' : ''}>未着手</option>
-            <option value="in_progress" ${task.status === 'in_progress' ? 'selected' : ''}>進行中</option>
-            <option value="done" ${task.status === 'done' ? 'selected' : ''}>完了</option>
-          </select>
-
-          <button class="btn-edit text-slate-400 hover:text-blue-600 p-1.5 rounded-lg hover:bg-slate-100 transition" title="編集">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
-          </button>
-
-          <button class="btn-delete text-slate-400 hover:text-rose-600 p-1.5 rounded-lg hover:bg-slate-100 transition" title="削除">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
-          </button>
-        </div>
-      `;
-
-      card.querySelector('.btn-check').addEventListener('click', () => toggleTaskStatus(task.id, task.status));
-      card.querySelector('.status-select').addEventListener('change', (e) => updateStatus(task.id, e.target.value));
-      card.querySelector('.btn-delete').addEventListener('click', () => deleteTask(task.id));
-      card.querySelector('.btn-edit').addEventListener('click', () => openEditModal(task));
-
-      return card;
-    }
-
-    // Status Filter Tabs
-    filterTabs.forEach(tab => {
+    // Filter Handlers
+    document.querySelectorAll('.filter-tab').forEach(tab => {
       tab.addEventListener('click', (e) => {
-        filterTabs.forEach(t => {
+        document.querySelectorAll('.filter-tab').forEach(t => {
           t.classList.remove('bg-blue-600', 'text-white', 'font-semibold');
-          t.classList.add('text-slate-600', 'font-medium');
+          t.classList.add('text-slate-600', 'hover:bg-slate-100', 'font-medium');
         });
-        e.target.classList.remove('text-slate-600', 'font-medium');
+        e.target.classList.remove('text-slate-600', 'hover:bg-slate-100', 'font-medium');
         e.target.classList.add('bg-blue-600', 'text-white', 'font-semibold');
 
         currentFilterStatus = e.target.getAttribute('data-filter');
-        renderApp();
+        renderTasks();
       });
     });
 
-    // Priority Filter
-    filterPrioritySelect.addEventListener('change', (e) => {
-      currentPriorityFilter = e.target.value;
-      renderApp();
-    });
-
-    // Search Input
     searchInput.addEventListener('input', (e) => {
       currentSearchTerm = e.target.value.toLowerCase().trim();
-      renderApp();
+      renderTasks();
     });
 
-    // Open Edit Modal
-    function openEditModal(task) {
-      editId.value = task.id;
-      editTitle.value = task.title || '';
-      editDescription.value = task.description || '';
-      editStatus.value = task.status || 'todo';
-      editPriority.value = task.priority || 'medium';
-      editCategory.value = task.category || '仕事';
-      editDuedate.value = task.dueDate || '';
+    filterPrioritySelect.addEventListener('change', (e) => {
+      currentFilterPriority = e.target.value;
+      renderTasks();
+    });
 
-      modalEdit.classList.remove('hidden');
+    // Update Dashboard Stats
+    function updateStats() {
+      const total = allTasks.length;
+      const pending = allTasks.filter(t => t.status !== 'done').length;
+      const completed = allTasks.filter(t => t.status === 'done').length;
+      const high = allTasks.filter(t => t.priority === 'high' && t.status !== 'done').length;
+
+      document.getElementById('stat-total').textContent = total;
+      document.getElementById('stat-pending').textContent = pending;
+      document.getElementById('stat-completed').textContent = completed;
+      document.getElementById('stat-high').textContent = high;
     }
 
-    function closeEditModal() {
-      modalEdit.classList.add('hidden');
-    }
+    // Render Tasks List
+    function renderTasks() {
+      const filtered = allTasks.filter(task => {
+        // Status Filter
+        if (currentFilterStatus === 'todo' && task.status !== 'todo') return false;
+        if (currentFilterStatus === 'in_progress' && task.status !== 'in_progress') return false;
+        if (currentFilterStatus === 'done' && task.status !== 'done') return false;
 
-    btnCloseEdit.addEventListener('click', closeEditModal);
-    btnCancelEdit.addEventListener('click', closeEditModal);
+        // Priority Filter
+        if (currentFilterPriority !== 'all' && task.priority !== currentFilterPriority) return false;
 
-    // Save Edit Form Submit
-    editTaskForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const id = editId.value;
-      if (!id || !currentUser) return;
+        // Search Term Filter
+        if (currentSearchTerm) {
+          const matchTitle = task.title?.toLowerCase().includes(currentSearchTerm);
+          const matchDesc = task.description?.toLowerCase().includes(currentSearchTerm);
+          const matchCat = task.category?.toLowerCase().includes(currentSearchTerm);
+          if (!matchTitle && !matchDesc && !matchCat) return false;
+        }
 
-      try {
-        const taskDocRef = doc(db, 'users', currentUser.uid, 'tasks', id);
-        await updateDoc(taskDocRef, {
-          title: editTitle.value.trim(),
-          description: editDescription.value.trim(),
-          status: editStatus.value,
-          priority: editPriority.value,
-          category: editCategory.value,
-          dueDate: editDuedate.value
-        });
+        return true;
+      });
 
-        closeEditModal();
-      } catch (err) {
-        console.error("Error editing task:", err);
-        showPermissionError();
+      if (filtered.length === 0) {
+        tasksContainer.innerHTML = '';
+        emptyState.classList.remove('hidden');
+        return;
       }
-    });
+
+      emptyState.classList.add('hidden');
+      tasksContainer.innerHTML = filtered.map(task => {
+        const isDone = task.status === 'done';
+        const priorityBadge = {
+          high: '<span class="px-2 py-0.5 rounded-full text-[11px] font-semibold bg-rose-100 text-rose-700 border border-rose-200">🔥 高</span>',
+          medium: '<span class="px-2 py-0.5 rounded-full text-[11px] font-medium bg-blue-100 text-blue-700 border border-blue-200">中</span>',
+          low: '<span class="px-2 py-0.5 rounded-full text-[11px] font-medium bg-slate-100 text-slate-600 border border-slate-200">低</span>'
+        }[task.priority || 'medium'];
+
+        const statusBadge = {
+          todo: '<span class="px-2 py-0.5 rounded text-[11px] bg-amber-50 text-amber-700 border border-amber-200">未着手</span>',
+          in_progress: '<span class="px-2 py-0.5 rounded text-[11px] bg-indigo-50 text-indigo-700 border border-indigo-200">進行中</span>',
+          done: '<span class="px-2 py-0.5 rounded text-[11px] bg-emerald-50 text-emerald-700 border border-emerald-200">完了</span>'
+        }[task.status || 'todo'];
+
+        return `
+          <div class="bg-white rounded-xl border ${isDone ? 'border-slate-200 opacity-60 bg-slate-50/50' : 'border-slate-200'} p-4 shadow-sm hover:shadow transition flex items-start justify-between gap-3 group">
+            
+            <div class="flex items-start space-x-3 flex-grow min-w-0">
+              <button onclick="toggleTaskStatus('${task.id}', '${task.status}')" class="mt-1 flex-shrink-0 w-5 h-5 rounded-md border ${isDone ? 'bg-emerald-500 border-emerald-500 text-white' : 'border-slate-300 hover:border-blue-500'} flex items-center justify-center transition">
+                ${isDone ? '<svg class="w-3.5 h-3.5 stroke-current" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>' : ''}
+              </button>
+
+              <div class="space-y-1 min-w-0 flex-grow">
+                <div class="flex items-center space-x-2 flex-wrap gap-y-1">
+                  <h4 class="font-semibold text-sm text-slate-800 ${isDone ? 'line-through text-slate-400' : ''}">${escapeHtml(task.title)}</h4>
+                  ${priorityBadge}
+                  ${statusBadge}
+                  ${task.category ? `<span class="text-[11px] px-2 py-0.5 rounded bg-slate-100 text-slate-600 font-medium">${escapeHtml(task.category)}</span>` : ''}
+                </div>
+
+                ${task.description ? `<p class="text-xs text-slate-500 line-clamp-2">${escapeHtml(task.description)}</p>` : ''}
+
+                ${task.dueDate ? `
+                  <div class="flex items-center text-[11px] ${new Date(task.dueDate) < new Date() && !isDone ? 'text-rose-600 font-semibold' : 'text-slate-400'} pt-0.5">
+                    <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                    期限: ${task.dueDate}
+                  </div>
+                ` : ''}
+              </div>
+            </div>
+
+            <div class="flex items-center space-x-1 opacity-90 sm:opacity-0 group-hover:opacity-100 transition">
+              <button onclick="openEditModal('${task.id}')" title="編集" class="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+              </button>
+              <button onclick="deleteTask('${task.id}')" title="削除" class="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+              </button>
+            </div>
+
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Helper: HTML Escaper
+    function escapeHtml(str) {
+      if (!str) return '';
+      return str.replace(/[&<>"']/g, match => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+      }[match]));
+    }
 
     btnGuideModal.addEventListener('click', () => modalGuide.classList.remove('hidden'));
     btnCloseGuide.addEventListener('click', () => modalGuide.classList.add('hidden'));
     btnGuideOk.addEventListener('click', () => modalGuide.classList.add('hidden'));
-
-    // Utility: HTML Escape Sanitizer
-    function escapeHtml(str) {
-      if (!str) return '';
-      return str.replace(/[&<>"']/g, function(m) {
-        return {
-          '&': '&amp;',
-          '<': '&lt;',
-          '>': '&gt;',
-          '"': '&quot;',
-          "'": '&#039;'
-        }[m];
-      });
-    }
 
   </script>
 </body>
